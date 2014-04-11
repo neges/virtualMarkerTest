@@ -55,9 +55,19 @@ ViewController*	m_vc;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    
-    [self initContent ];
-    [self initLight];
+	
+	if( !m_metaioSDK )
+    {
+        NSLog(@"SDK instance is 0x0. Please check the license string");
+        return;
+    }
+	
+    [self initCamera];
+	[self initTracking];
+	
+	
+    //[self initContent ];
+    //[self initLight];
     
     
 }
@@ -68,24 +78,62 @@ ViewController*	m_vc;
     // Dispose of any resources that can be recreated.
 }
 
--(void)initContent
+-(void)initCamera
 {
-    
-    if( !m_metaioSDK )
-    {
-        NSLog(@"SDK instance is 0x0. Please check the license string");
-        return;
-    }
-    
-    
-    // load our tracking configuration
-    NSString* trackingDataFile = [[NSBundle mainBundle] pathForResource:@"TrackingData" ofType:@"xml" inDirectory:@"Assets"];
+	
+	NSString *cameraParameters;
+		
+		
+	//Parameter Abfragen
+		cameraParameters = [NSString stringWithCString: m_metaioSDK->getCameraParameters(metaio::ECT_TRACKING).c_str()
+											  encoding:[NSString defaultCStringEncoding]];
+
+		NSLog(@"Standard: %@",cameraParameters);
+		
+		
+	//Setzen der idealen Kamera
+		metaio::Vector2di imageResolution = metaio::Vector2di(640,400);
+		metaio::Vector2d focalLength = metaio::Vector2d(640,640);
+		metaio::Vector2d principalPoint = metaio::Vector2d (320,200);
+		metaio::Vector4d distortion = metaio::Vector4d (0,0,0,0);
+
+		m_metaioSDK->setCameraParameters(imageResolution, focalLength, principalPoint, distortion);
+	
+	
+	//Parameter erneut abfragen
+		cameraParameters = [NSString stringWithCString: m_metaioSDK->getCameraParameters(metaio::ECT_TRACKING).c_str()
+											  encoding:[NSString defaultCStringEncoding]];
+
+		NSLog(@"Ideal: %@",cameraParameters);
+	
+	
+	
+}
+
+-(void)initTracking
+{
+	
+	// load our tracking configuration
+    NSString* trackingDataFile = [[NSBundle mainBundle] pathForResource:@"TrackingData_Marker" ofType:@"xml" inDirectory:@"Assets"];
 	if(trackingDataFile)
 	{
 		bool success = m_metaioSDK->setTrackingConfiguration([trackingDataFile UTF8String]);
 		if( !success)
 			NSLog(@"No success loading the tracking configuration");
 	}
+	
+	//virtuelles Tracking
+	NSString* trackingImage = [[NSBundle mainBundle] pathForResource:@"ID" ofType:@"jpg" inDirectory:@"Assets"];
+	NSLog(@"%@", trackingImage);
+	metaio::Vector2di currentImageSize = m_metaioSDK->setImage([trackingImage UTF8String]);
+	NSLog(@"Image Size : %d / %d", currentImageSize.x, currentImageSize.y);
+	
+}
+
+
+-(void)initContent
+{
+    
     
     // load content
     NSString* model = [[NSBundle mainBundle] pathForResource:@"agrm" ofType:@"obj" inDirectory:@"Assets/3D"];
@@ -172,6 +220,8 @@ ViewController*	m_vc;
 - (void) onSDKReady
 {
     NSLog(@"The SDK is ready");
+	
+	[self initTracking];
 }
 
 - (void) onAnimationEnd: (metaio::IGeometry*) geometry  andName:(NSString*) animationName
