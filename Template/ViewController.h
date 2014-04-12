@@ -13,6 +13,10 @@
 @interface ViewController : MetaioSDKViewController
 {
 
+    __weak IBOutlet UISwitch *logSwitch;
+    
+    NSString *markerPattern;
+    
 }
 
 @end

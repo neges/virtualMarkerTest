@@ -14,31 +14,6 @@
 
 #import "ViewController.h"
 
-class Callback : public metaio::IShaderMaterialOnSetConstantsCallback
-{
-public:
-	Callback(ViewController* vc) :
-    m_vc(vc)
-	{
-	}
-    
-private:
-	virtual void onSetShaderMaterialConstants(const metaio::stlcompat::String& shaderMaterialName, void* extra,
-                                              metaio::IShaderMaterialSetConstantsService* constantsService) override
-	{
-    // This will be identical to m_pModel since we only assigned this callback to that single geometry:
-    // metaio::IGeometry* geometry = static_cast<metaio::IGeometry*>(extra);
-    
-    // We just pass the positive sinus (range [0;1]) of absolute time in seconds so that we can
-    // use it to fade our effect in and out.
-    const float time[1] = { 0.5f * (1.0f + (float)sin(CACurrentMediaTime())) };
-    constantsService->setShaderUniformF("myValue", time, 1);
-}
-
-// This is here in case you need access to the view controller's methods (not used in this example)
-ViewController*	m_vc;
-};
-
 
 
 @interface ViewController ()
@@ -46,30 +21,13 @@ ViewController*	m_vc;
 @end
 
 @implementation ViewController
-{
-	Callback*		m_pCallback;
-}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
-	
-	if( !m_metaioSDK )
-    {
-        NSLog(@"SDK instance is 0x0. Please check the license string");
-        return;
-    }
-	
-    [self initCamera];
-	[self initTracking];
-	
-	
-    //[self initContent ];
-    //[self initLight];
-    
-    
+	   
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,14 +45,11 @@ ViewController*	m_vc;
 	//Parameter Abfragen
 		cameraParameters = [NSString stringWithCString: m_metaioSDK->getCameraParameters(metaio::ECT_TRACKING).c_str()
 											  encoding:[NSString defaultCStringEncoding]];
-
-		NSLog(@"Standard: %@",cameraParameters);
-		
 		
 	//Setzen der idealen Kamera
-		metaio::Vector2di imageResolution = metaio::Vector2di(640,400);
+		metaio::Vector2di imageResolution = metaio::Vector2di(640,480);
 		metaio::Vector2d focalLength = metaio::Vector2d(640,640);
-		metaio::Vector2d principalPoint = metaio::Vector2d (320,200);
+		metaio::Vector2d principalPoint = metaio::Vector2d (320,240);
 		metaio::Vector4d distortion = metaio::Vector4d (0,0,0,0);
 
 		m_metaioSDK->setCameraParameters(imageResolution, focalLength, principalPoint, distortion);
@@ -104,7 +59,7 @@ ViewController*	m_vc;
 		cameraParameters = [NSString stringWithCString: m_metaioSDK->getCameraParameters(metaio::ECT_TRACKING).c_str()
 											  encoding:[NSString defaultCStringEncoding]];
 
-		NSLog(@"Ideal: %@",cameraParameters);
+		NSLog(@"CameraParameters: %@",cameraParameters);
 	
 	
 	
@@ -123,87 +78,86 @@ ViewController*	m_vc;
 	}
 	
 	//virtuelles Tracking
-	NSString* trackingImage = [[NSBundle mainBundle] pathForResource:@"ID" ofType:@"jpg" inDirectory:@"Assets"];
-	NSLog(@"%@", trackingImage);
-	metaio::Vector2di currentImageSize = m_metaioSDK->setImage([trackingImage UTF8String]);
-	NSLog(@"Image Size : %d / %d", currentImageSize.x, currentImageSize.y);
+    markerPattern = @"noname";
+	NSString* trackingImage = [[NSBundle mainBundle] pathForResource:markerPattern ofType:@"jpg" inDirectory:@"Assets"];
+    m_metaioSDK->setImage([trackingImage UTF8String]);
+
 	
 }
 
+#pragma mark - Logging
 
--(void)initContent
+-(void)logging
+
 {
     
-    
-    // load content
-    NSString* model = [[NSBundle mainBundle] pathForResource:@"agrm" ofType:@"obj" inDirectory:@"Assets/3D"];
-    
-    
-    
-    metaio::IGeometry* theLoadedModel;
-	if(model)
-	{
-		// if this call was successful, theLoadedModel will contain a pointer to the 3D model
-        theLoadedModel =  m_metaioSDK->createGeometry([model UTF8String]);
-        if( theLoadedModel )
-        {
-            // scale it a bit down
-            theLoadedModel->setScale(metaio::Vector3d(1,1,1));
-        }
-        else
-        {
-            NSLog(@"error, could not load %@", model);
-        }
-        
-    }
-    
-    NSString* shaderMaterialsFilename = [[NSBundle mainBundle] pathForResource:@"shader_materials" ofType:@"xml" inDirectory:@"Assets/Shader"];
-    
-	if (shaderMaterialsFilename)
-	{
-		if (!m_metaioSDK->loadShaderMaterials([shaderMaterialsFilename UTF8String]))
+
+	//Qualität abfragen und anzeigen
+		if ([logSwitch isOn ])
 		{
-			NSLog(@"Failed to load shader materials from %@", shaderMaterialsFilename);
-		}
-		else
-		{
-			// Successfully loaded shader materials
-			if (model)
-			{
-				theLoadedModel->setShaderMaterial("tutorial11");
+            
+            //Documents Ornder abfragen
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            
+            //Log File erzeugen
+            
+            //Zeitstempel abfragen
+            NSDate *date = [[NSDate alloc] init];
+            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"HH_mm_ss__ddMMyy"];
+            NSString* str = [formatter stringFromDate:date];
+            
+            NSString *logFilename = [NSString stringWithFormat:@"%@_%@.txt", markerPattern, str];
+            
+            //Log Datei
+            NSString *logFile = [documentsDirectory stringByAppendingPathComponent:logFilename];
+            
+            [[NSFileManager defaultManager] createFileAtPath:logFile contents:[NSData data] attributes:nil];
+            
+            //erste Zeile schreiben
+            NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logFile];
+            [handle truncateFileAtOffset:[handle seekToEndOfFile]];
+            [handle writeData:[[NSString stringWithFormat:@"ID;TranslationX;TranslationY;TranslationZ;RotationX;RotationY;RotationZ;Pattern:%@\r\n", markerPattern] dataUsingEncoding:NSUTF8StringEncoding]];
+            
+
+			         
+            //alle TrackingValues Abfragen
+            metaio::stlcompat::Vector<metaio::TrackingValues> allTrackingValues = m_metaioSDK->getTrackingValues();
+            
+            for (int i = 0; i < allTrackingValues.size(); i++)
+            {
+                metaio::TrackingValues currentTrackingValues = allTrackingValues[i];
                 
-				m_pCallback = new Callback(self);
+            
                 
-				theLoadedModel->setShaderMaterialOnSetConstantsCallback(m_pCallback);
-			}
-		}
-    }
-	else
-		NSLog(@"Shader materials XML file not found");
-    
-    
+                
+                
+                if (currentTrackingValues.quality > 0)
+                {
+                    
+                    //Translation  und Rotation abfragen
+                    metaio::Vector3d markerTranslation = currentTrackingValues.translation;
+                    metaio::Vector3d markerRotation = currentTrackingValues.rotation.getEulerAngleDegrees();
+                    
+                    NSString *markerPose = [NSString stringWithFormat:@"%d;%f;%f;%f;%f;%f;%f\r\n", i+1, markerTranslation.x, markerTranslation.y, markerTranslation.z, markerRotation.x, markerRotation.y, markerRotation.z];
+                    
+                    // Schreiben
+                    NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logFile];
+                    [handle truncateFileAtOffset:[handle seekToEndOfFile]];
+                    [handle writeData:[markerPose dataUsingEncoding:NSUTF8StringEncoding]];
+                    
+                }
+                
+            }
+            
+            //logswitch nach einem druchlauf deaktivieren
+            logSwitch.on = false;
+            
 
-
+            
+        }
 }
-
-#pragma mark - Light
-
--(void)initLight
-{
-
-    metaio::ILight*		m_pLight;
-    
-    m_pLight = m_metaioSDK->createLight();
-    m_pLight->setType(metaio::ELIGHT_TYPE_DIRECTIONAL);
-    
-    m_metaioSDK->setAmbientLight(metaio::Vector3d(0.05f));
-    m_pLight->setDiffuseColor(metaio::Vector3d(1, 1, 1)); // white
-    
-    m_pLight->setCoordinateSystemID(0);
-
-    
-}
-
 
 
 
@@ -214,6 +168,8 @@ ViewController*	m_vc;
 {
     [super drawFrame];
     
+    [self logging];
+    
 
 }
 
@@ -221,6 +177,7 @@ ViewController*	m_vc;
 {
     NSLog(@"The SDK is ready");
 	
+    [self initCamera];
 	[self initTracking];
 }
 
