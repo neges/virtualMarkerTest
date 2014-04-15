@@ -44,7 +44,7 @@
 		04D9987618F8361A00E83E0B /* MetaioSDKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MetaioSDKViewController.h; path = metaio/MetaioSDKViewController.h; sourceTree = "<group>"; };
 		04D9987718F8361A00E83E0B /* MetaioSDKViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MetaioSDKViewController.mm; path = metaio/MetaioSDKViewController.mm; sourceTree = "<group>"; };
 		04D9987A18F8363500E83E0B /* metaioSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = metaioSDK.framework; path = metaio/metaioSDK.framework; sourceTree = "<group>"; };
-		04F329E4172FCE8000910751 /* itmAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = itmAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04F329E4172FCE8000910751 /* virtualMarkerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = virtualMarkerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F329E7172FCE8000910751 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04F329E9172FCE8000910751 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04F329EB172FCE8000910751 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -119,7 +119,7 @@
 		04F329E5172FCE8000910751 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				04F329E4172FCE8000910751 /* itmAR.app */,
+				04F329E4172FCE8000910751 /* virtualMarkerTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,7 +204,7 @@
 			);
 			name = Template;
 			productName = Template;
-			productReference = 04F329E4172FCE8000910751 /* itmAR.app */;
+			productReference = 04F329E4172FCE8000910751 /* virtualMarkerTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -369,7 +369,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Template/Template-Prefix.pch";
 				INFOPLIST_FILE = "Template/Template-Info.plist";
-				PRODUCT_NAME = itmAR;
+				PRODUCT_NAME = virtualMarkerTest;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -390,7 +390,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Template/Template-Prefix.pch";
 				INFOPLIST_FILE = "Template/Template-Info.plist";
-				PRODUCT_NAME = itmAR;
+				PRODUCT_NAME = virtualMarkerTest;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
