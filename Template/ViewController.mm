@@ -27,6 +27,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    markerArray = [[NSArray alloc]init];
 	   
 }
 
@@ -45,14 +47,26 @@
 	//Parameter Abfragen
 		cameraParameters = [NSString stringWithCString: m_metaioSDK->getCameraParameters(metaio::ECT_TRACKING).c_str()
 											  encoding:[NSString defaultCStringEncoding]];
+    
+    NSLog(@"CameraParameters at Startup: %@",cameraParameters);
 		
 	//Setzen der idealen Kamera
-		metaio::Vector2di imageResolution = metaio::Vector2di(640,480);
-		metaio::Vector2d focalLength = metaio::Vector2d(640,640);
-		metaio::Vector2d principalPoint = metaio::Vector2d (320,240);
+    int resX = 32;
+    int resY = 32;
+    
+		metaio::Vector2di imageResolution = metaio::Vector2di(resX,resY);
+		metaio::Vector2d focalLength = metaio::Vector2d(32,32);
+		metaio::Vector2d principalPoint = metaio::Vector2d (resX/2,resY/2);
 		metaio::Vector4d distortion = metaio::Vector4d (0,0,0,0);
 
 		m_metaioSDK->setCameraParameters(imageResolution, focalLength, principalPoint, distortion);
+    
+    
+    
+    
+    
+    m_metaioSDK->setCameraParameters(imageResolution, focalLength, principalPoint, distortion);
+    
 	
 	
 	//Parameter erneut abfragen
@@ -76,14 +90,78 @@
 		if( !success)
 			NSLog(@"No success loading the tracking configuration");
 	}
-	
-	//virtuelles Tracking
-    markerPattern = @"noname";
-	NSString* trackingImage = [[NSBundle mainBundle] pathForResource:markerPattern ofType:@"jpg" inDirectory:@"Assets"];
-    m_metaioSDK->setImage([trackingImage UTF8String]);
+
 
 	
 }
+-(void)loadTrackingImage:(NSString*)imgagefile
+{
+
+    
+	//virtuelles Tracking
+    markerPattern = imgagefile;
+	NSString* trackingImage = [[NSBundle mainBundle] pathForResource:markerPattern ofType:@"jpg" inDirectory:@"Assets/marker"];
+    m_metaioSDK->setImage([trackingImage UTF8String]);
+    
+    
+}
+
+#pragma mark - Table
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    
+    //Marker laden
+    NSError *error = nil;
+    
+    NSString *yourFolderPath = [[[NSBundle mainBundle] resourcePath]
+                                stringByAppendingPathComponent:@"Assets/marker"];
+    
+    markerArray = [[NSFileManager defaultManager]
+                                    contentsOfDirectoryAtPath:yourFolderPath error:&error];
+    
+    
+    return markerArray.count;
+    
+
+    
+
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+	
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+        
+	}
+    
+    
+    // Configure the cell...
+    NSString *cellText = [markerArray objectAtIndex:indexPath.row];
+    cellText = [cellText substringToIndex:[cellText length] - 4] ;
+    cell.textLabel.text = cellText ;
+
+    return cell;
+}
+
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    [self loadTrackingImage:cell.textLabel.text];
+
+}
+
+
 
 #pragma mark - Logging
 
@@ -140,7 +218,8 @@
                     metaio::Vector3d markerTranslation = currentTrackingValues.translation;
                     metaio::Vector3d markerRotation = currentTrackingValues.rotation.getEulerAngleDegrees();
                     
-                    NSString *markerPose = [NSString stringWithFormat:@"%d;%f;%f;%f;%f;%f;%f\r\n", i+1, markerTranslation.x, markerTranslation.y, markerTranslation.z, markerRotation.x, markerRotation.y, markerRotation.z];
+                    
+                    NSString *markerPose = [NSString stringWithFormat:@"%d;%1.3f;%1.3f;%1.3f;%1.3f;%1.3f;%1.3f\r\n", i+1, markerTranslation.x, markerTranslation.y, markerTranslation.z, markerRotation.x, markerRotation.y, markerRotation.z];
                     
                     // Schreiben
                     NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logFile];

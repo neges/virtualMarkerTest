@@ -36,6 +36,8 @@
 	</array>
 	<key>MetaioLicenseString</key>
 	<string>ikqJ54WqY65h4C/TQKS83/8MEHt0hdcnxTUtzYpjG8w=</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -10,12 +10,15 @@
 #import "EAGLView.h"
 #import "MetaioSDKViewController.h"
 
-@interface ViewController : MetaioSDKViewController
+@interface ViewController : MetaioSDKViewController <UITableViewDataSource, UITableViewDelegate>
 {
 
     __weak IBOutlet UISwitch *logSwitch;
     
     NSString *markerPattern;
+    
+    NSArray *markerArray;
+    
     
 }
 

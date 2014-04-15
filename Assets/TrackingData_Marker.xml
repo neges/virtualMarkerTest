@@ -262,6 +262,106 @@
 					</MarkerParameters>
 				</Parameters>
 			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>26</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>26</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>27</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>27</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>28</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>28</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>29</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>29</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>30</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>30</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>31</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>31</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>32</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>32</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>33</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>33</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>34</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>34</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
+            
+            <SensorCOS>
+				<SensorCosID>35</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>80</Size>
+						<MatrixID>35</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
 
 
 

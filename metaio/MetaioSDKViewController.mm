@@ -144,6 +144,9 @@
 		std::vector<metaio::Camera> cameras = m_metaioSDK->getCameraList();
 		if(cameras.size()>0)
 		{
+            //cameras[0].resolution.x = 640;
+            //cameras[0].resolution.y = 480;
+            
 			m_metaioSDK->startCamera(cameras[0]);
 		} else {
 			NSLog(@"No Camera Found");
