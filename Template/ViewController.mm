@@ -29,6 +29,8 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     markerArray = [[NSArray alloc]init];
+    
+    [self createLogFile];
 	   
 }
 
@@ -37,6 +39,44 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(void)createLogFile
+{
+
+    //Log File erzeugen
+    
+    //Documents Ornder abfragen
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    
+    
+    //Zeitstempel abfragen
+    NSDate *date = [[NSDate alloc] init];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"HH_mm_ss__ddMMyy"];
+    NSString* str = [formatter stringFromDate:date];
+    
+    NSString *logFilename = [NSString stringWithFormat:@"%@.txt", str];
+    
+    //Log Datei
+    logFile = [documentsDirectory stringByAppendingPathComponent:logFilename];
+    
+    [[NSFileManager defaultManager] createFileAtPath:logFile contents:[NSData data] attributes:nil];
+    
+    //erste Zeile schreiben
+    NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logFile];
+    [handle truncateFileAtOffset:[handle seekToEndOfFile]];
+    [handle writeData:[[NSString stringWithFormat:@"ID;TranslationX;TranslationY;TranslationZ;RotationX;RotationY;RotationZ;Pattern\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+
+    
+}
+
+-(IBAction)newLog:(id)sender
+{
+    [self createLogFile];
+}
+
 
 -(void)initCamera
 {
@@ -173,30 +213,8 @@
 	//Qualität abfragen und anzeigen
 		if ([logSwitch isOn ])
 		{
+
             
-            //Documents Ornder abfragen
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [paths objectAtIndex:0];
-            
-            //Log File erzeugen
-            
-            //Zeitstempel abfragen
-            NSDate *date = [[NSDate alloc] init];
-            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"HH_mm_ss__ddMMyy"];
-            NSString* str = [formatter stringFromDate:date];
-            
-            NSString *logFilename = [NSString stringWithFormat:@"%@_%@.txt", markerPattern, str];
-            
-            //Log Datei
-            NSString *logFile = [documentsDirectory stringByAppendingPathComponent:logFilename];
-            
-            [[NSFileManager defaultManager] createFileAtPath:logFile contents:[NSData data] attributes:nil];
-            
-            //erste Zeile schreiben
-            NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logFile];
-            [handle truncateFileAtOffset:[handle seekToEndOfFile]];
-            [handle writeData:[[NSString stringWithFormat:@"ID;TranslationX;TranslationY;TranslationZ;RotationX;RotationY;RotationZ;Pattern:%@\r\n", markerPattern] dataUsingEncoding:NSUTF8StringEncoding]];
             
 
 			         
@@ -219,7 +237,7 @@
                     metaio::Vector3d markerRotation = currentTrackingValues.rotation.getEulerAngleDegrees();
                     
                     
-                    NSString *markerPose = [NSString stringWithFormat:@"%d;%1.3f;%1.3f;%1.3f;%1.3f;%1.3f;%1.3f\r\n", i+1, markerTranslation.x, markerTranslation.y, markerTranslation.z, markerRotation.x, markerRotation.y, markerRotation.z];
+                    NSString *markerPose = [NSString stringWithFormat:@"%d;%1.3f;%1.3f;%1.3f;%1.3f;%1.3f;%1.3f;%@\r\n", i+1, markerTranslation.x, markerTranslation.y, markerTranslation.z, markerRotation.x, markerRotation.y, markerRotation.z,markerPattern];
                     
                     // Schreiben
                     NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logFile];
@@ -326,7 +344,5 @@
         NSLog(@"Visual search is currently communicating with the server");
     }
 }
-
-
 
 @end

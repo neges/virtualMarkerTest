@@ -19,7 +19,9 @@
     
     NSArray *markerArray;
     
+    NSString *logFile;
     
 }
+- (IBAction)newLog:(id)sender;
 
 @end

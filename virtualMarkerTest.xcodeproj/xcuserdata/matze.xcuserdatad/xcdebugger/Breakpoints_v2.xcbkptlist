@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Template/ViewController.mm"
-            timestampString = "419243926.791027"
+            timestampString = "419256042.64709"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
-            landmarkName = "-loadTrackingImage:"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "-initCamera"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
