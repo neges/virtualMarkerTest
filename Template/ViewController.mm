@@ -130,8 +130,7 @@
 		if( !success)
 			NSLog(@"No success loading the tracking configuration");
 	}
-
-
+	
 	
 }
 -(void)loadTrackingImage:(NSString*)imgagefile
@@ -142,8 +141,22 @@
     markerPattern = imgagefile;
 	NSString* trackingImage = [[NSBundle mainBundle] pathForResource:markerPattern ofType:@"jpg" inDirectory:@"Assets/marker"];
     m_metaioSDK->setImage([trackingImage UTF8String]);
+	   
     
+}
+
+-(IBAction)getCameraParameters:(id)sender
+{
+
+	NSString *cameraParameters;
+	
+	//Parameter Abfragen
+	cameraParameters = [NSString stringWithCString: m_metaioSDK->getCameraParameters(metaio::ECT_TRACKING).c_str()
+										  encoding:[NSString defaultCStringEncoding]];
     
+    NSLog(@"CameraParameters at Tracking: %@",cameraParameters);
+	
+
 }
 
 #pragma mark - Table

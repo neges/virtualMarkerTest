@@ -144,10 +144,12 @@
 		metaio::stlcompat::Vector<metaio::Camera> cameras = m_metaioSDK->getCameraList();
 		if(cameras.size()>0)
 		{
-			cameras[0].resolution.x = 1920;
-            cameras[0].resolution.y = 1080;
+			cameras[0].resolution.x = 1280;
+            cameras[0].resolution.y = 720;
 			
 			m_metaioSDK->startCamera(cameras[0]);
+			
+			
 		} else {
 			NSLog(@"No Camera Found");
 		}

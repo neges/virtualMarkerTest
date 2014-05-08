@@ -23,5 +23,6 @@
     
 }
 - (IBAction)newLog:(id)sender;
+-(IBAction)getCameraParameters:(id)sender;
 
 @end
