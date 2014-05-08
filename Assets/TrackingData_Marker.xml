@@ -8,7 +8,7 @@
                 <MarkerTrackingParameters>
                     <TrackingQuality>robust</TrackingQuality>
                     <ThresholdOffset>110</ThresholdOffset>
-                    <NumberOfSearchIterations>3</NumberOfSearchIterations>
+                    <NumberOfSearchIterations>10</NumberOfSearchIterations>
                 </MarkerTrackingParameters>
             </Parameters>
             

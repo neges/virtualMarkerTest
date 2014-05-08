@@ -8,7 +8,7 @@
 
 
 //-------------------
-//Template für metaio5.3
+//Template für metaio5.5beta
 //-------------------
 
 
@@ -91,11 +91,11 @@
     NSLog(@"CameraParameters at Startup: %@",cameraParameters);
 		
 	//Setzen der idealen Kamera
-    int resX = 32;
-    int resY = 32;
+    int resX = 1920;
+    int resY = 1080;
     
 		metaio::Vector2di imageResolution = metaio::Vector2di(resX,resY);
-		metaio::Vector2d focalLength = metaio::Vector2d(32,32);
+		metaio::Vector2d focalLength = metaio::Vector2d(resX,resX);
 		metaio::Vector2d principalPoint = metaio::Vector2d (resX/2,resY/2);
 		metaio::Vector4d distortion = metaio::Vector4d (0,0,0,0);
 

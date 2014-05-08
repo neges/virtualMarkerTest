@@ -2,11 +2,12 @@
 //  MetaioSDKViewController.m
 //  metaio SDK
 //
-// Copyright 2007-2013 metaio GmbH. All rights reserved.
+// Copyright 2007-2014 metaio GmbH. All rights reserved.
 //
 
 #import <QuartzCore/QuartzCore.h>
 #import <metaioSDK/IGeometry.h>
+#import <metaioSDK/STLCompatibility.h>
 #import "EAGLView.h"
 #import "MetaioSDKViewController.h"
 
@@ -126,12 +127,32 @@
 
     m_metaioSDK->initializeRenderer(screenSize.x, screenSize.y, metaio::getScreenRotationForInterfaceOrientation(self.interfaceOrientation), metaio::ERENDER_SYSTEM_OPENGL_ES_2_0, context);
     
+    // necessary for requesting screenshots
+    m_metaioSDK->setRendererFrameBuffers([glView getDefaultFrameBuffer], [glView getColorRenderBuffer]);
+    
+    
     // register our callback method for animations
     m_metaioSDK->registerDelegate(self);
         
 }
 
 
+- (void) startCamera
+{
+    if( m_metaioSDK )
+    {
+		metaio::stlcompat::Vector<metaio::Camera> cameras = m_metaioSDK->getCameraList();
+		if(cameras.size()>0)
+		{
+			cameras[0].resolution.x = 1920;
+            cameras[0].resolution.y = 1080;
+			
+			m_metaioSDK->startCamera(cameras[0]);
+		} else {
+			NSLog(@"No Camera Found");
+		}
+    }
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {	
@@ -139,20 +160,7 @@
     
 	// if the renderer appears we start rendering and capturing the camera
     [self startAnimation]; 
-    if( m_metaioSDK )
-    {
-		std::vector<metaio::Camera> cameras = m_metaioSDK->getCameraList();
-		if(cameras.size()>0)
-		{
-            //cameras[0].resolution.x = 640;
-            //cameras[0].resolution.y = 480;
-            
-			m_metaioSDK->startCamera(cameras[0]);
-		} else {
-			NSLog(@"No Camera Found");
-		}
-    }
-    
+    [self startCamera];
     
     // if we start up in landscape mode after having portrait before, we want to make sure that the renderer is rotated correctly
     UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;    

@@ -1,8 +1,8 @@
 //
-//  UnifeyeMobileViewController.h
+//  MetaioSDKViewController.h
 //  metaio SDK
 //
-// Copyright 2007-2013 metaio GmbH. All rights reserved.
+// Copyright 2007-2014 metaio GmbH. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -40,6 +40,8 @@ namespace metaio
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
+
+- (void) startCamera;
 
 /** Close the current view again */
 - (IBAction)onBtnClosePushed:(id)sender;

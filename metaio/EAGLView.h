@@ -47,4 +47,7 @@
 - (BOOL)deviceSupportsAntialiasing;
 
 
+- (GLuint) getDefaultFrameBuffer;
+- (GLuint) getColorRenderBuffer;
+
 @end

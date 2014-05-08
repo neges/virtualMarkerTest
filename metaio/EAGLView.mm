@@ -38,10 +38,10 @@
                                         nil];
         
         self.contentScaleFactor = [UIScreen mainScreen].scale;
+
+		supportAntialiasing = [self deviceSupportsAntialiasing];
+		NSLog(@"Using anti-aliasing on the device: %s", supportAntialiasing ? "yes" : "no");
     }
-    
-    supportAntialiasing = [self deviceSupportsAntialiasing];
-    NSLog(@"Using anti-aliasing on the device: %s", supportAntialiasing ? "yes" : "no");
     
     return self;
 }
@@ -266,6 +266,16 @@
         default:
 			return true;
 	}
+}
+
+- (GLuint) getDefaultFrameBuffer
+{
+	return defaultFramebuffer;
+}
+
+- (GLuint) getColorRenderBuffer
+{
+	return colorRenderbuffer;
 }
 
 

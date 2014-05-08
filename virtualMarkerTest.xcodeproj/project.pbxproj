@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04D8C10C191B7ECE00E29484 /* metaioSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D9987A18F8363500E83E0B /* metaioSDK.framework */; };
+		04D8C10E191B7F5E00E29484 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D8C10D191B7F5E00E29484 /* CoreImage.framework */; };
 		04D9987818F8361A00E83E0B /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D9987518F8361A00E83E0B /* EAGLView.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		04D9987918F8361A00E83E0B /* MetaioSDKViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D9987718F8361A00E83E0B /* MetaioSDKViewController.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		04D9987B18F8363500E83E0B /* metaioSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D9987A18F8363500E83E0B /* metaioSDK.framework */; };
 		04F329E8172FCE8000910751 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F329E7172FCE8000910751 /* UIKit.framework */; };
 		04F329EA172FCE8000910751 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F329E9172FCE8000910751 /* Foundation.framework */; };
 		04F329EC172FCE8000910751 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F329EB172FCE8000910751 /* CoreGraphics.framework */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04D8C10D191B7F5E00E29484 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		04D9987418F8361A00E83E0B /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAGLView.h; path = metaio/EAGLView.h; sourceTree = "<group>"; };
 		04D9987518F8361A00E83E0B /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EAGLView.mm; path = metaio/EAGLView.mm; sourceTree = "<group>"; };
 		04D9987618F8361A00E83E0B /* MetaioSDKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MetaioSDKViewController.h; path = metaio/MetaioSDKViewController.h; sourceTree = "<group>"; };
@@ -82,7 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04D9987B18F8363500E83E0B /* metaioSDK.framework in Frameworks */,
+				04D8C10E191B7F5E00E29484 /* CoreImage.framework in Frameworks */,
+				04D8C10C191B7ECE00E29484 /* metaioSDK.framework in Frameworks */,
 				C5F24681177C38F300EB88A8 /* CFNetwork.framework in Frameworks */,
 				C5F2467F177C38DA00EB88A8 /* Security.framework in Frameworks */,
 				04F32A22172FCF0E00910751 /* AudioToolbox.framework in Frameworks */,
@@ -127,6 +130,7 @@
 		04F329E6172FCE8000910751 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04D8C10D191B7F5E00E29484 /* CoreImage.framework */,
 				04D9987A18F8363500E83E0B /* metaioSDK.framework */,
 				C5F24680177C38F300EB88A8 /* CFNetwork.framework */,
 				C5F2467E177C38DA00EB88A8 /* Security.framework */,
@@ -357,6 +361,10 @@
 		04F32A0B172FCE8000910751 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -370,7 +378,7 @@
 				GCC_PREFIX_HEADER = "Template/Template-Prefix.pch";
 				INFOPLIST_FILE = "Template/Template-Info.plist";
 				PRODUCT_NAME = virtualMarkerTest;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -378,6 +386,10 @@
 		04F32A0C172FCE8000910751 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					armv7,
+				);
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -391,7 +403,7 @@
 				GCC_PREFIX_HEADER = "Template/Template-Prefix.pch";
 				INFOPLIST_FILE = "Template/Template-Info.plist";
 				PRODUCT_NAME = virtualMarkerTest;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
